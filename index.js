@@ -39,10 +39,6 @@ app.use("/npm",express.static(__dirname + "/node_modules"));
 app.use('/user', userRoute);
 app.use('/generate' , Products);
 app.use('/home' , productRoute);
-app.get("*", (request, response)=> {
-    response.sendFile(__dirname + "/public/src/index.html");
-});
-
 http.listen(port,(err)=>{
     if(err) console.log(err);
     console.log("app listening on " + port);
