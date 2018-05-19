@@ -28,8 +28,10 @@ userRoute.get('/profile',(req, res, next)=>{
 });
 
 userRoute.get('/logout',(req, res, next)=>{
-  req.logout();
-  res.redirect('/');
+ res.status(200).send({
+   success: true,
+   message: "Successfully logged out"
+ })
 });
 
 userRoute.use('/',(req, res, next)=>{
@@ -125,7 +127,7 @@ userRoute.post('/signin',(req, res, next)=> {
    
    if (err) return next(err);
    if (!doc) {
-     res.status(200).send({
+     res.status(401).send({
        success: false,
        message: "wrong email address"
      });
@@ -134,7 +136,7 @@ userRoute.post('/signin',(req, res, next)=> {
    doc.passwordCheck(loginDetails.password,(err,isMatch)=>{
      if (err) return next(err);
      if(!isMatch) {
-       res.status(200).send({
+       res.status(401).send({
          success: false,
          message: "wrong password"
        });
@@ -151,24 +153,12 @@ userRoute.post('/signin',(req, res, next)=> {
        success:true,
        message: "sucessfully logged in",
        data: doc,
-       token: token
+       token: token,
+       expiresIn: 120000
      })
+     
    })
  })
 });
 return userRoute;
 };
-
-// function isLoggedIn(req, res, next){
-//   if(req.body.user.token.length){
-//     return next();
-//   }
-//   res.redirect('/');
-// }
-// function notLoggedIn(req, res, next){
-//   if(!req.isAuthenticated()){
-//     return next();
-//   }
-//   res.redirect('/');
-// }
-
