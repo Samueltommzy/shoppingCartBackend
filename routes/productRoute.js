@@ -6,9 +6,13 @@ let Cart = require("../models/cart");
 let Order = require("../models/order");
 let accountSid ="1234";
 let authtoken = "1111";
+let { authmw,tokenmw } = require("../middleware/middleware");
+
 //let client = require("twilio")(accountSid,authtoken);
 
+//productRoute.use(authmw);
 productRoute.get('/product', (req,res,next)=>{
+    console.log("product route" , req.body);
     Product.find({}).exec((err,document)=>{
         if(err) return next(err);
         console.log("products", document);
