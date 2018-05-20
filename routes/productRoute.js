@@ -25,23 +25,21 @@ productRoute.get('/product', (req,res,next)=>{
     });
 });
 
-productRoute.get('/addtoCart/:id',(req,res,next)=>{
-    let productId = req.params.id;
-    console.log(productId);
+productRoute.post('/addtoCart',(req,res,next)=>{
+    let productId = req.body.product._id;
+    console.log("productId" ,productId);
+    console.log("session", req.session);
     let cart = new Cart(req.session.cart? req.session.cart: {});
     Product.findById(productId,(err,product)=>{
         console.log("got here",product);
         if (err) return next(err);
         cart.add(product,productId);
         req.session.cart = cart;
-        console.log(req.session.cart);
     }).exec((err,doc)=>{
-        doc.storedQuantity++;
-        doc.productQuantity--;
         if(err) return next(err);
          res.status(200).send({
             success: true,
-            message: "product successfully added",
+            message: "product successfully added to cart",
             data: doc
         });
     });

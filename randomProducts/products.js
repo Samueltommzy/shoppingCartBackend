@@ -12,6 +12,7 @@ router.get('/',(req,res,next)=>{
             productdescription: faker.lorem.paragraph(),
             image: faker.image.imageUrl
         });
+    
         product.save();
         console.log("products",product);
     }
